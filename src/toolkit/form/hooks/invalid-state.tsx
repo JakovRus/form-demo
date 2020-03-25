@@ -2,7 +2,8 @@ import {useState} from 'react';
 import {getValidator} from "../validation/get-validator";
 import {FormElementConfigs} from "../types/element-types";
 
-type ElementValue = string | string[] | number | undefined;
+export type ElementValue = string | string[] | number | undefined;
+export type ValidationFunction = (value: ElementValue) => boolean;
 
 export function useInvalidState(elements: FormElementConfigs) {
   const [invalidState, setInvalidState] = useState(getInitialValue(elements.length));
@@ -14,20 +15,21 @@ export function useInvalidState(elements: FormElementConfigs) {
     setInvalidState(newState);
   };
 
-  const validators = elements.map((element, index) => {
-    return (value: ElementValue) => {
-      const validate = getValidator(element.validation);
+  const validationFunctions: ValidationFunction[] =
+    elements.map((element, index) => {
+      return (value: ElementValue) => {
+        const validate = getValidator(element.validation);
 
-      const invalid = validate(value);
-      setInvalid(index, invalid);
+        const invalid = validate(value);
+        setInvalid(index, invalid);
 
-      return invalid;
-    }
-  });
+        return invalid;
+      }
+    });
 
   return {
     invalidState,
-    validators,
+    validationFunctions,
   }
 }
 

@@ -7,6 +7,7 @@ export enum FormElementType {
 }
 
 export type FormElementConfig<T extends FormElementType> = {
+  id: string;
   type: T;
   props: FormElementPropsType<T>;
   validation?: ValidationType;
