@@ -1,38 +1,27 @@
 import {useState} from 'react';
 import {getValidator} from "../validation/get-validator";
-import {FormElementConfigs} from "../types/element-types";
+import {FormElementConfigs, TypedFormElementConfig} from "../types/element-types";
+import {FormState, getInitialState, getPartialSetter} from "../utils/get-initial-state";
 
 export type ElementValue = string | string[] | number | undefined;
 export type ValidationFunction = (value: ElementValue) => boolean;
 
 export function useInvalidState(elements: FormElementConfigs) {
-  const [invalidState, setInvalidState] = useState(getInitialValue(elements.length));
+  const [invalidState, setInvalidState] = useState(getInitialState(elements, true));
+  const setInvalid = getPartialSetter(invalidState, setInvalidState);
 
-  const setInvalid = (index: number, invalid: boolean) => {
-    const newState = invalidState.concat([]);
-    newState[index] = invalid;
+  const validate = (state: FormState) => {
+    return elements.reduce((result: boolean, element: TypedFormElementConfig) => {
+      const validate = getValidator(element.validation);
+      const invalid = validate(state[element.key]);
 
-    setInvalidState(newState);
+      setInvalid(element.key, invalid);
+      return invalid || result;
+    }, false);
   };
-
-  const validationFunctions: ValidationFunction[] =
-    elements.map((element, index) => {
-      return (value: ElementValue) => {
-        const validate = getValidator(element.validation);
-
-        const invalid = validate(value);
-        setInvalid(index, invalid);
-
-        return invalid;
-      }
-    });
 
   return {
     invalidState,
-    validationFunctions,
+    validate,
   }
-}
-
-function getInitialValue(length: number) {
-  return Array.from({length}, () => false);
 }

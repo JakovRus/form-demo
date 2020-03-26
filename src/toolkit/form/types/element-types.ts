@@ -1,5 +1,6 @@
 import React from 'react';
 import {ValidationType} from "./validation";
+import {FDInputProps} from "../../input/input";
 
 export enum FormElementType {
   TEXT_INPUT = 'TEXT_INPUT',
@@ -7,7 +8,7 @@ export enum FormElementType {
 }
 
 export type FormElementConfig<T extends FormElementType> = {
-  id: string;
+  key: string;
   type: T;
   props: FormElementPropsType<T>;
   validation?: ValidationType;
@@ -15,7 +16,7 @@ export type FormElementConfig<T extends FormElementType> = {
 
 export type FormElementPropsType<T extends FormElementType> = T extends
   FormElementType.TEXT_INPUT ?
-  React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> :
+  Omit<FDInputProps, 'invalid'> :
   React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>;
 
 export type TypedFormElementConfig = FormElementConfig<FormElementType.TEXT_INPUT> |

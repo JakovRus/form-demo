@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useInvalidState} from "./hooks/invalid-state";
 import {FormConfig} from "./types/types";
 import {onSubmit} from "./utils/on-submit";
 import {FormElements} from "./components/form-elements";
 import {FormButtons} from "./components/form-buttons";
+import {Delayer} from "../../utils/delayer";
+import {useFormState} from "./hooks/form-state";
 
 export type FormProps = {
   config: FormConfig;
@@ -11,18 +13,23 @@ export type FormProps = {
 
 export function Form(props: FormProps) {
   const {config} = props;
-  const {
-    invalidState,
-    validationFunctions
-  } = useInvalidState(config.elements);
+  const delayer = useRef(new Delayer()).current;
+  const {invalidState, validate} = useInvalidState(config.elements);
+  const {state, setState} = useFormState(config.elements);
+
+  useEffect(() => {
+    delayer.call(() => validate(state));
+
+    return () => delayer.clear();
+  }, [state]);
 
   return (
     <form onSubmit={onSubmit}>
       <FormElements elements={config.elements}
-                    invalidState={invalidState}
-                    validationFunctions={validationFunctions}/>
-      <FormButtons validationFunctions={validationFunctions}
-                   config={config}/>
+                    state={state} setState={setState}
+                    invalidState={invalidState}/>
+      {/*<FormButtons validationFunctions={validationFunctions}*/}
+                   {/*config={config}/>*/}
     </form>
   )
 }

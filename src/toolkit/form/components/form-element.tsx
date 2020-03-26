@@ -1,19 +1,20 @@
 import React from 'react';
-import {withFormValidation} from "./hocs/with-validation";
-import {FormElementType, TypedFormElementConfig} from "./types/element-types";
+import {FormElementType, TypedFormElementConfig} from "../types/element-types";
+import {FDInput} from "../../input/input";
 
 export type FormElementProps = {
   config: TypedFormElementConfig;
+  invalid?: boolean;
 }
 
 const FORM_ELEMENT_ERROR_MESSAGE = 'Wrong element type';
 
-function FormElementBase(props: FormElementProps) {
-  const {config} = props;
+export function FormElement(props: FormElementProps) {
+  const {config, invalid} = props;
 
   switch (config.type) {
     case FormElementType.TEXT_INPUT: {
-      return <input {...config.props}/>
+      return <FDInput {...config.props} invalid={invalid}/>
     }
     case FormElementType.SELECT: {
       return <select {...config.props} />
@@ -23,5 +24,3 @@ function FormElementBase(props: FormElementProps) {
     }
   }
 }
-
-export const FormElement = withFormValidation(FormElementBase);
