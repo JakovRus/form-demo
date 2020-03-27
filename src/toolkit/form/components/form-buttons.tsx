@@ -1,23 +1,23 @@
 import React from 'react';
 import {FormButtonConfig} from "../types/button-types";
 import {getSubmitFunction} from "../utils/get-submit-function";
-import {ValidationFunction} from "../hooks/invalid-state";
-import {FormConfig} from "../types/types";
-import {FormElementConfigs} from "../types/element-types";
+import {ValidateFunction} from "../hooks/invalid-state";
+import {FormState} from "../utils/get-initial-state";
 
 type FormButtonsProps = {
-  validationFunctions: ValidationFunction[];
-  config: FormConfig;
+  validate: ValidateFunction;
+  state: FormState;
+  buttons?: FormButtonConfig[];
 }
 
 export function FormButtons(props: FormButtonsProps) {
-  const {buttons, elements} = props.config;
-  if(!buttons) {
+  const {buttons, state, validate} = props;
+  if (!buttons) {
     return null;
   }
 
   const buttonElements = buttons.map((button) => {
-    const onClick = getClickHandler(button, elements, props.validationFunctions);
+    const onClick = getClickHandler(button, state, validate);
 
     return <button {...button.props}
                    onClick={onClick}
@@ -29,15 +29,15 @@ export function FormButtons(props: FormButtonsProps) {
 
 function getClickHandler(
   buttonConfig: FormButtonConfig,
-  elements: FormElementConfigs,
-  validationFunctions: ValidationFunction[],
+  state: FormState,
+  validate: ValidateFunction,
 ) {
   const {onClick} = buttonConfig.props;
 
   return buttonConfig.isSubmit ?
     getSubmitFunction(
-      elements,
-      validationFunctions,
+      state,
+      validate,
       onClick
     ) : onClick;
 }

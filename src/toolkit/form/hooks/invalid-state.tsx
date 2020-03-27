@@ -5,6 +5,7 @@ import {FormState, getInitialState, getPartialSetter} from "../utils/get-initial
 import {ElementValue} from "../utils/types";
 
 export type ValidationFunction = (value: ElementValue) => boolean;
+export type ValidateFunction = (state: FormState) => boolean;
 
 export function useInvalidState(elements: FormElementConfigs) {
   const [invalidState, setInvalidState] = useState(getInitialState(elements, false));

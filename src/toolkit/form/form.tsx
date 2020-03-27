@@ -31,8 +31,9 @@ export function Form(props: FormProps) {
       <FormElements elements={config.elements}
                     state={state} setState={setState}
                     invalidState={invalidState}/>
-      {/*<FormButtons validationFunctions={validationFunctions}*/}
-                   {/*config={config}/>*/}
+      <FormButtons buttons={config.buttons}
+                   validate={validate}
+                   state={state}/>
     </form>
   )
 }
