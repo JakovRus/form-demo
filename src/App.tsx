@@ -5,8 +5,8 @@ import {FormElementType} from "./toolkit/form/types/element-types";
 import {ValidationType} from "./toolkit/form/types/validation";
 import {Form} from "./toolkit/form/form";
 
+const config = getConfig();
 function App() {
-  const config = getConfig();
   return (
     <div className="App">
       <Form config={config}/>
@@ -26,7 +26,7 @@ function getConfig(): FormConfig {
         props: {
           placeholder: 'INPUT',
         },
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.REQUIRED,
       }
     ],
     buttons: [

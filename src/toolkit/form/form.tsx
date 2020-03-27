@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useInvalidState} from "./hooks/invalid-state";
 import {FormConfig} from "./types/types";
 import {onSubmit} from "./utils/on-submit";
@@ -6,6 +6,7 @@ import {FormElements} from "./components/form-elements";
 import {FormButtons} from "./components/form-buttons";
 import {Delayer} from "../../utils/delayer";
 import {useFormState} from "./hooks/form-state";
+import {useMounted} from "./hooks/mounted";
 
 export type FormProps = {
   config: FormConfig;
@@ -16,11 +17,13 @@ export function Form(props: FormProps) {
   const delayer = useRef(new Delayer()).current;
   const {invalidState, validate} = useInvalidState(config.elements);
   const {state, setState} = useFormState(config.elements);
+  const isMounted = useMounted();
 
   useEffect(() => {
-    delayer.call(() => validate(state));
-
-    return () => delayer.clear();
+    if(isMounted) {
+      delayer.call(() => validate(state));
+      return () => delayer.clear();
+    }
   }, [state]);
 
   return (

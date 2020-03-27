@@ -14,6 +14,10 @@ export function getInitialState<T = string>(elements: TypedFormElementConfig[], 
 
 export function getPartialSetter<T>(state: State<T>, setState: (state: State<T>) => void) {
   return (key: string, value: T) => {
+    if(state[key] === value) {
+      return;
+    }
+
     const newState: State<T> = Object.assign({}, state);
     newState[key] = value;
 

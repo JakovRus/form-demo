@@ -2,12 +2,12 @@ import {useState} from 'react';
 import {getValidator} from "../validation/get-validator";
 import {FormElementConfigs, TypedFormElementConfig} from "../types/element-types";
 import {FormState, getInitialState, getPartialSetter} from "../utils/get-initial-state";
+import {ElementValue} from "../utils/types";
 
-export type ElementValue = string | string[] | number | undefined;
 export type ValidationFunction = (value: ElementValue) => boolean;
 
 export function useInvalidState(elements: FormElementConfigs) {
-  const [invalidState, setInvalidState] = useState(getInitialState(elements, true));
+  const [invalidState, setInvalidState] = useState(getInitialState(elements, false));
   const setInvalid = getPartialSetter(invalidState, setInvalidState);
 
   const validate = (state: FormState) => {
