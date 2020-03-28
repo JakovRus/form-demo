@@ -6,7 +6,7 @@ export function getValidator(validationType?: ValidationType) {
             return (value: any) => !value;
         }
         case ValidationType.NUMBER: {
-            return (value: any) => !!value && isNaN(value);
+            return (value: any) => !value || isNaN(value);
         }
         default: {
             return () => false;

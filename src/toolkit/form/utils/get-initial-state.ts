@@ -1,4 +1,5 @@
 import {TypedFormElementConfig} from "../types/element-types";
+import {Dispatch, SetStateAction} from "react";
 
 export type State<T> = { [key: string]: T };
 export type InvalidState = State<boolean>;
@@ -12,15 +13,15 @@ export function getInitialState<T = string>(elements: TypedFormElementConfig[], 
   }, {});
 }
 
-export function getPartialSetter<T>(state: State<T>, setState: (state: State<T>) => void) {
-  return (key: string, value: T) => {
-    if(state[key] === value) {
-      return;
-    }
 
-    const newState: State<T> = Object.assign({}, state);
-    newState[key] = value;
 
-    setState(newState);
+export function getPartialSetter<V>(setState: Dispatch<SetStateAction<State<V>>>) {
+  return (key: string, value: V) => {
+    setState((prevState: State<V>) => {
+      const newState: State<V> = Object.assign({}, prevState);
+      newState[key] = value;
+
+      return newState;
+    })
   }
 }

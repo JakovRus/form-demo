@@ -21,12 +21,27 @@ function getConfig(): FormConfig {
   return {
     elements: [
       {
-        key: 'value',
+        key: 'name',
         type: FormElementType.TEXT_INPUT,
         props: {
-          placeholder: 'INPUT',
+          placeholder: 'name',
         },
         validation: ValidationType.REQUIRED,
+      },
+      {
+        key: 'surname',
+        type: FormElementType.TEXT_INPUT,
+        props: {
+          placeholder: 'surname',
+        },
+      },
+      {
+        key: 'years',
+        type: FormElementType.TEXT_INPUT,
+        props: {
+          placeholder: 'Years',
+        },
+        validation: ValidationType.NUMBER,
       }
     ],
     buttons: [
