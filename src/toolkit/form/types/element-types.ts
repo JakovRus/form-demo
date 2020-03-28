@@ -16,7 +16,7 @@ export type FormElementConfig<T extends FormElementType> = {
 
 export type FormElementPropsType<T extends FormElementType> = T extends
   FormElementType.TEXT_INPUT ?
-  Omit<FDInputProps, 'invalid'> :
+  Omit<FDInputProps, 'invalid' | 'id'> :
   React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>;
 
 export type TypedFormElementConfig = FormElementConfig<FormElementType.TEXT_INPUT> |

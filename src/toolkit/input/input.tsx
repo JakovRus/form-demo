@@ -6,12 +6,16 @@ export type FDInputProps =
     HTMLInputElement> &
   {
     invalid?: boolean;
+    id: string;
   }
 
-export function FDInput(props: FDInputProps) {
-  const {invalid, ...rest} = props;
+function FDInputBase(props: FDInputProps) {
+  const {invalid, id, ...rest} = props;
   const className = !invalid ? '' : styles.invalid;
+
   return (
-    <input {...rest} className={className} />
+    <input {...rest} className={className} data-id={id} />
   );
 }
+
+export const FDInput = React.memo<FDInputProps>(FDInputBase);

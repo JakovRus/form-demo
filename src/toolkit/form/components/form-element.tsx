@@ -14,7 +14,7 @@ export function FormElement(props: FormElementProps) {
 
   switch (config.type) {
     case FormElementType.TEXT_INPUT: {
-      return <FDInput {...config.props} invalid={invalid}/>
+      return <FDInput {...config.props} id={config.key} invalid={invalid}/>
     }
     case FormElementType.SELECT: {
       return <select {...config.props} />
