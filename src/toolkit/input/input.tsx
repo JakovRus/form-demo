@@ -12,7 +12,7 @@ export type FDInputProps =
 function FDInputBase(props: FDInputProps) {
   const {invalid, id, ...rest} = props;
   const className = !invalid ? '' : styles.invalid;
-
+  
   return (
     <input {...rest} className={className} data-id={id} />
   );

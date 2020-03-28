@@ -2,12 +2,14 @@ import React, {ChangeEvent, useCallback} from "react";
 import {FormElementConfigs} from "../types/element-types";
 import {FormElement} from "./form-element";
 import {FormState, InvalidState} from "../utils/get-initial-state";
+import {ElementValue} from "../utils/types";
 
 type FormElementsProps = {
   elements: FormElementConfigs;
   invalidState: InvalidState;
   state: FormState;
   setState(key: string, value: string): void;
+  validate(key: string): boolean;
 }
 
 const MISSING_DATA_ID_MESSAGE = 'Missing data-id attribute';
@@ -28,7 +30,8 @@ export function FormElements(props: FormElementsProps) {
     element.props.onChange = onChange;
 
     return <FormElement invalid={props.invalidState[element.key]}
-                        config={element} key={element.key}/>
+                        config={element} validate={props.validate}
+                        key={element.key}/>
   });
 
   return <>{elements}</>;
